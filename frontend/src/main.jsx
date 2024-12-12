@@ -6,15 +6,24 @@ import AddressManagement from "./pages/AddressManagement.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
+import Protected from "./components/Protected.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <LocationSelection />,
+    element: (
+      <Protected>
+        <LocationSelection />
+      </Protected>
+    ),
   },
   {
     path: "/address-management",
-    element: <AddressManagement />,
+    element: (
+      <Protected>
+        <AddressManagement />
+      </Protected>
+    ),
   },
   {
     path: "/login",
