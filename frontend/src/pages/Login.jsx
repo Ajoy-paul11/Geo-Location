@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import LoginForm from "../../components/Auth/LoginForm";
+import LoginForm from "../components/LoginForm.jsx";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../feature/user/userSlice.js";

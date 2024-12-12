@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import RegisterForm from "../../components/Auth/RegisterForm";
+import RegisterForm from "../components/RegisterForm.jsx";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../feature/user/userSlice.js";
