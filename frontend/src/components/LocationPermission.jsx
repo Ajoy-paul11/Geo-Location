@@ -1,4 +1,3 @@
-// src/components/LocationPermission/LocationPermissionModal.jsx
 import React, { useState } from "react";
 import {
   Box,

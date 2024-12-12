@@ -1,4 +1,3 @@
-// src/pages/LocationSelection.js
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Box, Typography, Paper } from "@mui/material";

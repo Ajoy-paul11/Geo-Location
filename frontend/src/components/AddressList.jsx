@@ -1,4 +1,3 @@
-// src/components/AddressList/AddressList.jsx
 import React from "react";
 import {
   List,

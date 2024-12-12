@@ -1,4 +1,3 @@
-// src/components/MapSelector/MapSelector.jsx
 import React, { useState, useCallback } from "react";
 import { GoogleMap, Marker, LoadScript } from "@react-google-maps/api";
 import { Box, Button, Paper, Stack } from "@mui/material";
