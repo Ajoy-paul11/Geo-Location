@@ -31,17 +31,15 @@ const LocationPermissionModal = ({
   const [error, setError] = useState(null);
   const handleEnableLocation = async () => {
     try {
-      // First check if geolocation is supported
       if (!navigator.geolocation) {
         setError("Geolocation is not supported by your browser");
       }
 
-      // Request permission with options
       const position = await new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject, {
-          enableHighAccuracy: true, // Request high accuracy
-          timeout: 5000, // Time to wait for location
-          maximumAge: 0, // Don't use cached position
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
         });
       });
 
@@ -51,7 +49,6 @@ const LocationPermissionModal = ({
         setError("Invalid coordinates received");
       }
 
-      // If successful, call the callback with location data
       onEnableLocation({
         latitude,
         longitude,
@@ -60,7 +57,6 @@ const LocationPermissionModal = ({
     } catch (error) {
       setError("Error getting location:", error);
 
-      // Handle specific error types
       let errorMessage = "Unable to get your location. ";
       switch (error.code) {
         case error.PERMISSION_DENIED:
@@ -79,7 +75,6 @@ const LocationPermissionModal = ({
 
       setError(errorMessage);
 
-      // Fallback to manual search after error
       setTimeout(() => {
         onManualSearch();
       }, 3000);
@@ -87,10 +82,8 @@ const LocationPermissionModal = ({
   };
 
   const handleManualSearch = () => {
-    // Clear any existing errors
     setError(null);
 
-    // Call the parent component's manual search handler
     onManualSearch();
   };
 
