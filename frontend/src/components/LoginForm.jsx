@@ -87,7 +87,7 @@ const LoginForm = ({ onSubmit }) => {
           </Button>
 
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Link href="/forgot-password" variant="body2">
+            <Link href="/login" variant="body2">
               Forgot password?
             </Link>
             <Link href="/register" variant="body2">

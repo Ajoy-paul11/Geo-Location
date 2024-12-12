@@ -1,10 +1,12 @@
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Box, Typography, Paper } from "@mui/material";
+import { Container, Box, Typography, Paper, Button } from "@mui/material";
 import LocationPermissionModal from "../components/LocationPermission.jsx";
 import MapSelector from "../components/MapSelector.jsx";
 import AddressForm from "../components/AddressForm.jsx";
 import axios from "axios";
+import { logout } from "../feature/user/userSlice.js";
+import { useDispatch } from "react-redux";
 
 const defaultLocation = {
   lat: 40.7128,
@@ -13,6 +15,7 @@ const defaultLocation = {
 
 const LocationSelection = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showPermissionModal, setShowPermissionModal] = useState(true);
   const [selectedLocation, setSelectedLocation] = useState(defaultLocation);
   const [showAddressForm, setShowAddressForm] = useState(false);
@@ -67,12 +70,39 @@ const LocationSelection = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await axios
+        .post("http://localhost:5001/api/v1/users/logout")
+        .then((response) => {
+          if (response.data) {
+            dispatch(logout());
+            navigate("/login");
+          }
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   return (
     <Container maxWidth="md">
       <Box py={4}>
         <Typography variant="h4" gutterBottom>
           Select Your Location
         </Typography>
+
+        <Button
+          variant="contained"
+          // startIcon={<MyLocationIcon />}
+          sx={{ position: "absolute", top: 26, right: 16 }}
+          onClick={handleLogout}
+        >
+          Logout
+        </Button>
 
         <LocationPermissionModal
           open={showPermissionModal}
