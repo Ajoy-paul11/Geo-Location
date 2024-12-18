@@ -6,14 +6,15 @@ const addressSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ["home", "work", "friend & family"]
+        enum: ["home", "office", "friend & family"]
     },
     address: {
         longitude: Number,
         latitude: Number,
+        houseNo: Number,
+        street: String,
+        area: String,
         city: String,
-        state: String,
-        country: String,
     },
     isFavorite: {
         type: Boolean,

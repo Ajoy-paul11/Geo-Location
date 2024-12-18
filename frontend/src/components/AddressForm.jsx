@@ -43,13 +43,13 @@ const AddressForm = ({ initialValues, onSubmit }) => {
                 fullWidth
                 onChange={(_, value) => field.onChange(value)}
               >
-                <ToggleButton value="Home">
+                <ToggleButton value="home">
                   <HomeIcon sx={{ mr: 1 }} /> Home
                 </ToggleButton>
-                <ToggleButton value="Office">
+                <ToggleButton value="office">
                   <BusinessIcon sx={{ mr: 1 }} /> Office
                 </ToggleButton>
-                <ToggleButton value="Friends & Family">
+                <ToggleButton value="friend & family">
                   <PeopleIcon sx={{ mr: 1 }} /> Friends & Family
                 </ToggleButton>
               </ToggleButtonGroup>

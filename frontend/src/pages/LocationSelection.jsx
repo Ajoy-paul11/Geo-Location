@@ -7,6 +7,7 @@ import AddressForm from "../components/AddressForm.jsx";
 import axios from "axios";
 import { logout } from "../feature/user/userSlice.js";
 import { useDispatch } from "react-redux";
+import api from "../utils/axios.js";
 
 const defaultLocation = {
   lat: 40.7128,
@@ -43,37 +44,34 @@ const LocationSelection = () => {
 
   const handleAddressSubmit = async (addressData) => {
     try {
-      const { type } = addressData;
-      const completeAddress = {
-        ...addressData,
-        latitude: selectedLocation.lat,
-        longitude: selectedLocation.lng,
-      };
-
-      const postData = {
+      const { type, houseNo, street, area, city } = addressData;
+      const payload = {
         type,
-        address: completeAddress,
+        address: {
+          houseNo,
+          street,
+          area,
+          city,
+          latitude: selectedLocation.lat,
+          longitude: selectedLocation.lng,
+        },
       };
 
-      await axios
-        .post("http://localhost:5001/api/v1/addresses/create", postData)
-        .then((response) => {
-          if (response.data.data) {
-            navigate("/address-management");
-          }
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
+      const response = await api.post("/addresses/create", payload);
+
+      if (response.data.data) {
+        navigate("/address-management");
+      }
     } catch (error) {
       console.error("Error saving address:", error);
+      alert(error?.response?.data?.message || error.message);
     }
   };
 
   const handleLogout = async () => {
     try {
-      await axios
-        .post("http://localhost:5001/api/v1/users/logout")
+      await api
+        .post("/users/logout")
         .then((response) => {
           if (response.data) {
             dispatch(logout());
@@ -94,6 +92,15 @@ const LocationSelection = () => {
         <Typography variant="h4" gutterBottom>
           Select Your Location
         </Typography>
+
+        <Button
+          variant="contained"
+          // startIcon={<MyLocationIcon />}
+          sx={{ position: "absolute", top: 26, right: 156 }}
+          onClick={() => navigate("/address-management")}
+        >
+          Addresses
+        </Button>
 
         <Button
           variant="contained"

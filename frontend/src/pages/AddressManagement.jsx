@@ -13,6 +13,7 @@ import AddressList from "../components/AddressList.jsx";
 import AddressForm from "../components/AddressForm.jsx";
 import MapSelector from "../components/MapSelector.jsx";
 import axios from "axios";
+import api from "../utils/axios.js";
 
 const AddressManagement = () => {
   const navigate = useNavigate();
@@ -25,16 +26,12 @@ const AddressManagement = () => {
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
-        await axios
-          .get("http://localhost:5001/api/v1/addresses")
-          .then((response) => {
-            if (response.data.data) {
-              setLoading(false);
-            }
-          })
-          .catch((error) => {
-            alert(error.message);
-          });
+        const response = await api.get("/addresses");
+
+        if (response.data?.data) {
+          setAddresses(response.data?.data?.addresses);
+          setLoading(false);
+        }
       } catch (error) {
         console.error("Error fetching addresses:", error);
         setLoading(false);
@@ -59,16 +56,10 @@ const AddressManagement = () => {
 
   const handleDelete = async (addressId) => {
     try {
-      await axios
-        .delete(`http://localhost:5001/api/v1/addresses/delete/${addressId}`)
-        .then((response) => {
-          window.location.reload();
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-
-      setAddresses(addresses.filter((addr) => addr._id !== addressId));
+      const response = await api.delete(`addresses/delete/${addressId}`);
+      if (response) {
+        setAddresses(addresses.filter((addr) => addr._id !== addressId));
+      }
     } catch (error) {
       console.error("Error deleting address:", error);
     }
@@ -85,33 +76,31 @@ const AddressManagement = () => {
       const putData = {
         type,
         address: completeAddress,
-        id: editingAddress._id,
       };
 
-      await axios
-        .put("http://localhost:5001/api/v1/addresses/update", putData)
-        .then((response) => {
-          if (response.data.data) {
-            setEditingAddress(null);
-            setShowEditDialog(false);
-          }
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-
-      setAddresses(
-        addresses.map((addr) =>
-          addr._id === editingAddress._id
-            ? { ...addr, ...completeAddress }
-            : addr
-        )
+      const response = await api.put(
+        `addresses/update/${editingAddress._id}`,
+        putData
       );
+
+      if (response.data.data) {
+        setEditingAddress(null);
+        setShowEditDialog(false);
+
+        setAddresses(
+          addresses.map((addr) =>
+            addr._id === editingAddress._id
+              ? response.data.data.address // Use the response data directly
+              : addr
+          )
+        );
+      }
 
       setShowEditDialog(false);
       setEditingAddress(null);
     } catch (error) {
       console.error("Error updating address:", error);
+      alert(error?.response?.data?.message || "Error updating address");
     }
   };
 
@@ -152,7 +141,7 @@ const AddressManagement = () => {
           addresses={addresses}
           onEdit={handleEdit}
           onDelete={handleDelete}
-          onSelect={() => {}} // Handle address selection if needed
+          onSelect={() => {}}
         />
 
         <Dialog

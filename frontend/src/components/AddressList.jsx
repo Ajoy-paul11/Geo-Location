@@ -18,11 +18,11 @@ import PeopleIcon from "@mui/icons-material/People";
 
 const getAddressIcon = (type) => {
   switch (type) {
-    case "Home":
+    case "home":
       return <HomeIcon />;
-    case "Office":
+    case "office":
       return <BusinessIcon />;
-    case "Friends & Family":
+    case "friends & family":
       return <PeopleIcon />;
     default:
       return <HomeIcon />;

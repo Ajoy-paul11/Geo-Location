@@ -19,7 +19,8 @@ export const createAddress = AsyncHandler(async (req, res, next) => {
                 latitude: address.latitude,
                 city: address.city,
                 street: address.street,
-                area: address.area
+                area: address.area,
+                houseNo: address.houseNo
             },
             user: req.user._id
         }
@@ -44,14 +45,15 @@ export const getAddresses = AsyncHandler(async (req, res, next) => {
 
 
 export const updateAddress = AsyncHandler(async (req, res, next) => {
-    const { type, address, id } = req.body
+    const { type, address } = req.body
+    const { id } = req.params
+
     if (!type || !address) {
         const error = new ApiError(401, "All fields are required")
         return next(error)
     }
     const existingAddress = await Address.findOne({
-        _id: id,
-        userId: req.user.id
+        _id: id
     });
 
     if (!existingAddress) {
@@ -67,7 +69,8 @@ export const updateAddress = AsyncHandler(async (req, res, next) => {
                 latitude: address.latitude,
                 city: address.city,
                 street: address.street,
-                area: address.area
+                area: address.area,
+                houseNo: address.houseNo
             },
             user: req.user._id
         },
